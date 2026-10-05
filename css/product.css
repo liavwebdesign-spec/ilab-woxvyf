@@ -2,6 +2,37 @@
    Order: gallery and buy box (C1 split), the close look (the signature, approved 5.10.2026), details (C8), more (C4),
    reviews (C13, still), close and service band. Every media query at the end (lint L-order). */
 
+/* ==========================================================================
+   STAGE · the ring alone (approved 5.10.2026, "more innovative and bold"). The word ROYAL is a drawing behind it, the ring is a
+   cut-out (white made clear, the stone kept whole), the gold changes under a passing light, and on a desktop with motion the
+   ring travels into the gallery on scroll. The transforms live on the images, driven by custom properties on .stage-ring
+   ========================================================================== */
+.stage { --ring: min(60svh, 42vw); position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: auto 1fr auto; align-items: end; gap: 0 var(--gap-m); height: calc(100svh - var(--hdr)); min-height: 600px; padding: 0 var(--gutter) 40px;
+  background: radial-gradient(ellipse 46% 52% at 50% 46%, #fff 0%, rgba(255,255,255,0) 100%), linear-gradient(var(--ivory) 0%, var(--ivory) 72%, var(--surface) 100%); }
+.stage .crumbs { grid-column: 1 / -1; align-self: start; padding-inline: 0; }
+.stage-word { position: absolute; top: 46%; left: 50%; /* qa-allow: physical (centred with translate) */ width: min(88vw, 1720px); height: auto; translate: -50% -50%; fill: #e6dfd3; pointer-events: none; }
+.stage-ring { position: absolute; z-index: 5; top: 46%; left: 50%; /* qa-allow: physical (centred with negative margins) */ width: var(--ring); aspect-ratio: 1; margin: calc(var(--ring) / -2) 0 0 calc(var(--ring) / -2); pointer-events: none;
+  --tx: 0px; --ty: 0px; --s: 1; --rx: 0deg; --ry: 0deg; }
+.sr-img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: translate(var(--tx), var(--ty)) scale(var(--s)) perspective(1400px) rotateX(var(--rx)) rotateY(var(--ry)); filter: drop-shadow(0 40px 40px rgba(18,18,18,.10)); }
+.sr-img.is-on { opacity: 1; }
+/* the light that passes over the ring while the gold changes; masked by the ring itself, so it never touches the ground */
+.sr-sheen { position: absolute; inset: 0; opacity: 0; transform: translate(var(--tx), var(--ty)) scale(var(--s)) perspective(1400px) rotateX(var(--rx)) rotateY(var(--ry));
+  background: linear-gradient(100deg, rgba(255,255,255,0) 40%, rgba(255,255,255,.85) 50%, rgba(255,255,255,0) 60%) no-repeat; background-size: 300% 100%;
+  -webkit-mask: var(--mask) center / contain no-repeat; mask: var(--mask) center / contain no-repeat; mix-blend-mode: soft-light; }
+.stage-title { grid-column: 1; grid-row: 3; display: grid; gap: 12px; }
+.stage-title h1 { max-width: 13ch; font-size: calc(clamp(34px, 2.2vw + 0.5rem, 72px) * var(--a11y-scale)); line-height: 1.08; }
+.stage-metal { grid-column: 2; grid-row: 3; display: grid; justify-items: center; gap: 8px; }
+.sm-row { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.72); }
+.sm { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-block: 0; padding-inline: 10px 16px; border: 0; border-radius: 999px; background: none; font-size: var(--fs-micro); font-weight: 500; color: var(--muted-strong); cursor: pointer; white-space: nowrap; transition: background-color .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease); }
+.sm i { width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(18,18,18,.14); }
+.sm .w { background: var(--gold-w); } .sm .y { background: var(--gold-y); } .sm .r { background: var(--gold-r); }
+.sm[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-soft); }
+.sm-note { min-height: 1.5em; font-size: 12px; color: var(--muted-strong); }
+.stage-buy { grid-column: 3; grid-row: 3; display: grid; justify-items: end; gap: 6px; text-align: end; }
+.stage-buy .price { font-size: calc(clamp(24px, 1vw + 0.9rem, 32px) * var(--a11y-scale)); }
+.stage-pay { font-size: var(--fs-micro); color: var(--muted-strong); }
+.stage-buy .btn { margin-top: 8px; }
+
 /* ---------- breadcrumbs ---------- */
 .crumbs { padding: 24px var(--gutter) 0; font-size: var(--fs-micro); color: var(--muted); }
 .crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0; padding: 0; list-style: none; }
@@ -36,7 +67,7 @@
 .box { position: sticky; top: 136px; display: grid; gap: 20px; }
 .box-model { font-size: 13px; font-weight: 500; letter-spacing: .14em; color: var(--muted-strong); }
 /* the product name is the largest heading of the page; the section heads here are one step down (--fs-h2s) */
-.box h1 { margin-top: -8px; font-size: calc(clamp(34px, 2.2vw + 0.5rem, 72px) * var(--a11y-scale)); line-height: 1.1; }
+.box-h { margin-top: -8px; }
 .pg-product main h2 { font-size: var(--fs-h2s); line-height: 1.1; }
 .box-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
 .box-price .price { font-size: calc(clamp(22px, 0.8vw + 0.9rem, 28px) * var(--a11y-scale)); }
@@ -88,11 +119,15 @@
 .cart-n { position: absolute; top: 4px; inset-inline-start: 4px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px; background: var(--accent); font-family: var(--f-latin); font-size: 11px; font-weight: 500; line-height: 1; color: #fff; }
 .cart-n[hidden] { display: none; }
 
-/* page opening: the box comes in after the header, like the hero of the homepage */
-.open-anim .box .rv { opacity: 0; translate: 0 18px; animation: open-fs 0s 2.5s forwards; }
-.open-anim .gal-main img { transform: scale(1.06); animation: open-fs 0s 2.5s forwards; }
-.open-anim.is-open .box .rv { opacity: 1; translate: none; animation: none; transition: opacity .7s var(--ease), translate .7s var(--ease); transition-delay: calc(.25s + var(--i, 0) * 60ms); }
-.open-anim.is-open .gal-main img { transform: none; animation: none; transition: transform 1.2s var(--ease); }
+/* page opening: after the header, the word, then the ring rises into place, then the three corners of the stage */
+.open-anim .stage .rv, .open-anim .stage-word { opacity: 0; translate: 0 18px; animation: open-fs 0s 2.5s forwards; }
+.open-anim .stage-ring { opacity: 0; translate: 0 32px; scale: .94; animation: open-fs 0s 2.5s forwards; }
+.open-anim.is-open .stage .rv, .open-anim.is-open .stage-word, .open-anim.is-open .stage-ring { opacity: 1; translate: none; scale: none; animation: none; transition: opacity .9s var(--ease), translate .9s var(--ease), scale 1.2s var(--ease); }
+.open-anim.is-open .stage-word { transition-delay: .1s; }
+.open-anim.is-open .stage-ring { transition-delay: .25s; }
+.open-anim.is-open .stage .rv { transition-delay: calc(.6s + var(--i, 0) * 90ms); }
+/* while the ring travels in, the gallery's first photo waits for it */
+.gal.is-landing .gal-main img { opacity: 0; }
 
 /* ==========================================================================
    A CLOSE LOOK · the signature. Resting state (no JS, reduced motion, phone): four round close-ups, each cropped in CSS
@@ -200,6 +235,7 @@
   .sel select:hover { background: var(--sand); }
   .acc summary:hover { background: var(--sand); }
   .opt-row .tlink:hover { color: var(--ink); }
+  .sm:hover:not([aria-pressed="true"]) { color: var(--ink); background: rgba(255,255,255,.9); }
 }
 @media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .gal-item.has-loupe { cursor: none; } }
 
@@ -225,6 +261,18 @@
   html.has-buybar .fabs { bottom: 112px; }
 }
 @media (max-width: 1023px) {
+  /* the stage stacks: ring, then the name, the gold and the price; the word sits behind the ring */
+  .stage { --ring: min(80vw, 46svh); grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; justify-items: center; gap: 16px; height: auto; min-height: calc(100svh - var(--hdr)); padding-bottom: 32px; text-align: center; align-content: space-between; }
+  .stage .crumbs { justify-self: stretch; }
+  .stage-word { top: calc(48px + var(--ring) / 2); width: 92vw; }
+  .stage-ring { position: relative; top: auto; left: auto; /* qa-allow: physical (resets the desktop centring) */ margin: 0; }
+  .stage-title, .stage-metal, .stage-buy { grid-column: 1; grid-row: auto; }
+  .stage-title { justify-items: center; gap: 8px; }
+  .stage-title h1 { max-width: 16ch; }
+  .stage-buy { grid-template-columns: auto auto; align-items: center; justify-content: center; justify-items: center; gap: 4px 16px; text-align: center; }
+  .stage-buy .price { grid-row: 1; }
+  .stage-pay { grid-row: 2; }
+  .stage-buy .btn { grid-row: 1 / span 2; margin: 0; }
   .pdp { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 16px; }
   /* the gallery becomes a row to swipe; the next photo peeks in, so the row reads as one */
   .gal-track { display: flex; gap: 8px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
@@ -240,6 +288,8 @@
 }
 @media (max-width: 767px) {
   .crumbs { padding-top: 16px; }
+  .stage { gap: 12px; padding-bottom: 24px; }
+  .sm { padding-inline: 8px 12px; }
   .gal-item, .gal-main { flex-basis: 86%; }
   .box { gap: 18px; }
   .box-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
