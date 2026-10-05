@@ -160,7 +160,7 @@
     var label = (p.m ? p.m + ", " : "") + p.t;
     // a product without a surface: image, name, price, then the metals, all on one centred axis (library/sections.md S4)
     return '<article class="card reveal">' +
-      '<a class="card-a" href="#picks" aria-label="' + label + ", " + money(p.p) + '">' +
+      '<a class="card-a" href="' + (D.pages && D.pages[id] || "#picks") + '" aria-label="' + label + ", " + money(p.p) + '">' +
       '<span class="card-img"><img src="' + IMG(id) + '" alt="" width="1000" height="1000" loading="lazy"></span>' +
       '<span class="card-model">' + (p.m || "&nbsp;") + '</span><span class="card-title">' + p.t + '</span><span class="price">' + money(p.p) + "</span>" +
       swatches(p.g) + "</a>" +
@@ -177,7 +177,7 @@
   });
 
   /* ---------- tabs (C4) ---------- */
-  var grid = document.querySelector("[data-grid]"), tabs = [].slice.call(document.querySelectorAll(".tab"));
+  var grid = document.querySelector("[data-grid]"), tabs = grid ? [].slice.call(document.querySelectorAll(".tab")) : [];
   function show(key, animate) {
     var paint = function () {
       grid.innerHTML = D.tabs[key].map(card).join("");
@@ -199,10 +199,10 @@
       e.preventDefault(); var n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); n.click();
     });
   });
-  show("picks", false);
+  if (grid) show("picks", false);
 
   /* ---------- the signature: arc of shapes (MV:g151), filtering the jewellery below ---------- */
-  var arc = (function () {
+  var arc = document.querySelector(".ac") && (function () {
     var root = document.querySelector(".ac"), stage = root.querySelector(".ac-stage"), cards = [].slice.call(root.querySelectorAll(".ac-card")), n = cards.length;
     var cap = root.querySelector(".ac-cap"), capT = root.querySelector(".ac-t"), capM = root.querySelector(".ac-m");
     var row = root.querySelector("[data-mini]"), nameEl = root.querySelector("[data-shape-name]"), allLink = root.querySelector("[data-shape-all]");
@@ -291,7 +291,7 @@
   })();
   // the shape links in the mega menu turn the arc to that shape
   document.querySelectorAll("[data-shape]").forEach(function (a) {
-    a.addEventListener("click", function () { var i = +a.dataset.shape; setTimeout(function () { arc.to(i); }, 500); });
+    if (arc) a.addEventListener("click", function () { var i = +a.dataset.shape; setTimeout(function () { arc.to(i); }, 500); });
   });
 
   /* ---------- newsletter ---------- */
@@ -400,7 +400,7 @@
   /* ---------- the reviews wall (approved 5.10.2026): columns travel with the scroll at their own speed, the middle one the
      other way. Only with motion allowed and GSAP present; otherwise the wall stays whole and still ---------- */
   (function reviewsWall() {
-    var wall = document.querySelector(".rw"); if (!wall || !window.gsap || !window.ScrollTrigger || reduced) return;
+    var wall = document.querySelector(".rw:not(.rw-still)"); if (!wall || !window.gsap || !window.ScrollTrigger || reduced) return;
     gsap.registerPlugin(ScrollTrigger);
     var cols = [].slice.call(wall.querySelectorAll(".rw-col"));
     // per width: the third column is hidden on narrow screens, and a hidden column must not get a tween that never moves
@@ -498,6 +498,8 @@
   }
   function snapSoon() { clearTimeout(snapT); snapT = setTimeout(function () { snapIcons(); }, 120); }
   window.ILAB_SNAP = snapIcons;
+  // shared with the inner pages (js/product.js)
+  window.ILAB_UI = { card: card, money: money, lensAt: lensAt, shownRect: shownRect, inView: inView, snapSoon: snapSoon, reduced: reduced };
   addEventListener("load", snapSoon); addEventListener("resize", snapSoon);
   // any change of layout (a lazy image arriving, a tab repainting, text scaled by the a11y toolbar) moves what is below it
   if (window.ResizeObserver) new ResizeObserver(snapSoon).observe(document.body);

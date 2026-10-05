@@ -52,5 +52,7 @@ window.ILAB = {
     cushion: [7282, 7257, 7321],
     radiant: [8853, 7144],
     asscher: []
-  }
+  },
+  /* products that already have a page in the sketch */
+  pages: { 7598: "royal.html" }
 };

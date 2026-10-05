@@ -1,0 +1,260 @@
+/* iLab Diamonds · product page (R9, P5 sandwich), on top of site.css: same tokens, header, footer, cards and reviews.
+   Order: gallery and buy box (C1 split), the close look (the signature, approved 5.10.2026), details (C8), more (C4),
+   reviews (C13, still), close and service band. Every media query at the end (lint L-order). */
+
+/* ---------- breadcrumbs ---------- */
+.crumbs { padding: 24px var(--gutter) 0; font-size: var(--fs-micro); color: var(--muted); }
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0; padding: 0; list-style: none; }
+.crumbs li { display: inline-flex; align-items: center; gap: 10px; }
+.crumbs li + li::before { content: "/"; color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.crumbs a { display: inline-flex; align-items: center; min-height: 32px; color: var(--muted-strong); text-decoration: none; transition: color .15s var(--ease); }
+.crumbs [aria-current] { color: var(--ink); font-weight: 500; }
+
+/* ==========================================================================
+   PRODUCT · C1 split. The photos stand on ivory tiles; the buy box rides beside them at eye level
+   ========================================================================== */
+.pdp { display: grid; grid-template-columns: minmax(0, 1.42fr) minmax(360px, 1fr); align-items: start; gap: clamp(40px, 5vw, 112px); padding: 24px var(--gutter) var(--sec); }
+.gal { position: relative; min-width: 0; }
+.gal-track { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-s); outline: none; }
+.gal-track:focus-visible { box-shadow: var(--focus); border-radius: var(--r-card); }
+.gal-item { position: relative; margin: 0; aspect-ratio: 1; border-radius: var(--r-card); background: var(--ivory); overflow: hidden; }
+.gal-main { grid-column: 1 / -1; aspect-ratio: 6 / 5; }
+.gal-item img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.gal-item.is-looking .loupe { opacity: 1; }
+.gal .loupe { --lens: clamp(180px, 15vw, 260px); }
+.gal .loupe-hint { top: 16px; inset-inline-end: 16px; }
+.gal.was-used .loupe-hint { opacity: 0; }
+.gal-count { display: none; }
+/* the video tile: the stone in a hand, in ordinary light. Plays only when asked, with a pause on the same button */
+.gal-video video { width: 100%; height: 100%; object-fit: cover; }
+.gal-play { position: absolute; bottom: 16px; inset-inline-start: 16px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: rgba(255,255,255,.94); font-size: var(--fs-micro); font-weight: 500; color: var(--ink); cursor: pointer; box-shadow: 0 6px 18px -8px rgba(18,18,18,.35); transition: background-color .18s var(--ease); }
+.gal-play .ic { width: 20px; height: 20px; }
+.gal-play .ic-pause, .gal-play[aria-pressed="true"] .ic-play { display: none; }
+.gal-play[aria-pressed="true"] .ic-pause { display: inline-block; }
+
+/* the buy box: JS sets top so a box taller than the screen still shows its bottom (sticky sidebar) */
+.box { position: sticky; top: 136px; display: grid; gap: 20px; }
+.box-model { font-size: 13px; font-weight: 500; letter-spacing: .14em; color: var(--muted-strong); }
+/* the product name is the largest heading of the page; the section heads here are one step down (--fs-h2s) */
+.box h1 { margin-top: -8px; font-size: calc(clamp(34px, 2.2vw + 0.5rem, 72px) * var(--a11y-scale)); line-height: 1.1; }
+.pg-product main h2 { font-size: var(--fs-h2s); line-height: 1.1; }
+.box-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+.box-price .price { font-size: calc(clamp(22px, 0.8vw + 0.9rem, 28px) * var(--a11y-scale)); }
+.box-pay { font-size: var(--fs-micro); color: var(--muted-strong); }
+.box-lead { max-width: 44ch; font-size: var(--fs-body); line-height: 1.7; color: var(--muted-strong); }
+.box-specs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.box-specs div { display: grid; gap: 2px; padding: 12px 14px; border-radius: 12px; background: var(--ivory); }
+.box-specs dt { font-size: 12px; color: var(--muted-strong); }
+.box-specs dd { margin: 0; font-size: calc(18px * var(--a11y-scale)); font-weight: 500; line-height: 1.3; }
+
+/* options */
+.opt { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.opt-h { padding: 0; font-size: var(--fs-small); font-weight: 400; color: var(--muted-strong); }
+.opt-h b { color: var(--ink); }
+.opt-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.opt-row .tlink { min-height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.metals { display: flex; gap: 4px; margin-top: 2px; }
+.metal { position: relative; display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
+.metal input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.metal i { width: 28px; height: 28px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(18,18,18,.14); transition: box-shadow .18s var(--ease); }
+.metal .w { background: var(--gold-w); } .metal .y { background: var(--gold-y); } .metal .r { background: var(--gold-r); }
+.metal input:checked + i { box-shadow: inset 0 0 0 1px rgba(18,18,18,.14), 0 0 0 3px #fff, 0 0 0 4.5px var(--ink); }
+.metal input:focus-visible + i { box-shadow: inset 0 0 0 1px rgba(18,18,18,.14), 0 0 0 3px #fff, 0 0 0 4.5px var(--ink), 0 0 0 8px color-mix(in srgb, var(--brand) 55%, transparent); }
+.opt-note, .opt-help { font-size: var(--fs-micro); line-height: 1.5; color: var(--muted-strong); }
+.opt-err { min-height: 0; font-size: var(--fs-micro); font-weight: 500; color: #9b2c1f; }
+.opt-err:empty { display: none; }
+.sel { position: relative; }
+.sel::after { /* qa-allow: physical (a chevron drawn with borders, like the menu triggers) */ content: ""; position: absolute; top: 50%; inset-inline-end: 20px; width: 8px; height: 8px; margin-top: -6px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); pointer-events: none; }
+.sel select { width: 100%; min-height: 52px; padding-block: 0; padding-inline: 16px 48px; border: 0; border-radius: var(--r-control); background: var(--ivory); font-family: var(--f-text); font-size: 16px; color: var(--ink); appearance: none; cursor: pointer; transition: background-color .18s var(--ease), box-shadow .18s var(--ease); }
+.sel select:focus-visible { box-shadow: var(--focus); }
+.sel select[aria-invalid="true"] { box-shadow: inset 0 0 0 1.5px #9b2c1f; }
+
+.buy { display: flex; gap: 8px; margin-top: 4px; }
+.buy-btn { flex: 1; }
+.buy-fav { display: grid; place-items: center; flex: none; width: 52px; height: 52px; border: 0; border-radius: var(--r-control); background: var(--ivory); color: var(--ink); cursor: pointer; transition: background-color .18s var(--ease), color .18s var(--ease); }
+.buy-fav[aria-pressed="true"] { color: var(--accent); }
+.buy-msg { font-size: var(--fs-small); font-weight: 500; color: var(--accent-text); }
+.buy-msg:empty { display: none; }
+.assure { display: grid; gap: 10px; }
+.assure li { display: flex; align-items: flex-start; gap: 10px; font-size: var(--fs-micro); line-height: 1.55; color: var(--muted-strong); }
+.assure .ic { width: 20px; height: 20px; color: var(--accent); }
+.assure b { color: var(--ink); }
+.box-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; }
+.box-links .tlink { display: inline-flex; align-items: center; min-height: 44px; }
+.box-wa { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: var(--fs-small); font-weight: 500; color: var(--ink); text-decoration: none; transition: color .15s var(--ease); }
+.box-wa .ic { width: 20px; height: 20px; }
+
+/* the cart count in the header */
+.cart-n { position: absolute; top: 4px; inset-inline-start: 4px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px; background: var(--accent); font-family: var(--f-latin); font-size: 11px; font-weight: 500; line-height: 1; color: #fff; }
+.cart-n[hidden] { display: none; }
+
+/* page opening: the box comes in after the header, like the hero of the homepage */
+.open-anim .box .rv { opacity: 0; translate: 0 18px; animation: open-fs 0s 2.5s forwards; }
+.open-anim .gal-main img { transform: scale(1.06); animation: open-fs 0s 2.5s forwards; }
+.open-anim.is-open .box .rv { opacity: 1; translate: none; animation: none; transition: opacity .7s var(--ease), translate .7s var(--ease); transition-delay: calc(.25s + var(--i, 0) * 60ms); }
+.open-anim.is-open .gal-main img { transform: none; animation: none; transition: transform 1.2s var(--ease); }
+
+/* ==========================================================================
+   A CLOSE LOOK · the signature. Resting state (no JS, reduced motion, phone): four round close-ups, each cropped in CSS
+   from the same photo by --x --y (the point, as a fraction) and --z (the zoom). On a desktop with motion the section
+   becomes a stage: one round glass, the camera travels over the photo, the four stops change beside it
+   ========================================================================== */
+.tour { --glass: min(34vw, 60vh, 640px); }
+.tour-vis { display: none; }
+.tour-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-m) clamp(40px, 5vw, 112px); margin: 0; padding: 0; list-style: none; }
+.tour-step { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: clamp(20px, 2vw, 40px); }
+.tour-crop { position: relative; display: block; width: clamp(120px, 11vw, 200px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff;
+  box-shadow: 0 0 0 1.5px rgba(18,18,18,.5), 0 0 0 8px rgba(255,255,255,.94), 0 0 0 9.5px rgba(18,18,18,.16), 0 26px 44px -20px rgba(18,18,18,.45); }
+.tour-crop img { width: 100%; height: 100%; object-fit: contain; }
+.tour-crop img { transform: translate(calc((.5 - var(--x)) * var(--z) * 100%), calc((.5 - var(--y)) * var(--z) * 100%)) scale(var(--z)); }
+.tour-txt { display: grid; gap: 8px; }
+.tour-n { font-family: "Clash Display", var(--f-latin); font-size: clamp(32px, 2.2vw + 0.5rem, 56px); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink); }
+.tour-txt h3 { font-size: var(--fs-h3l); line-height: 1.3; }
+.tour-txt p { max-width: 42ch; font-size: var(--fs-small); line-height: 1.7; color: var(--muted-strong); }
+.tour-more { margin-top: 48px; text-align: center; }
+/* the stage */
+.tour-glass { position: relative; width: var(--glass); aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: #fff;
+  box-shadow: 0 0 0 2px rgba(18,18,18,.5), 0 0 0 14px rgba(255,255,255,.94), 0 0 0 16px rgba(18,18,18,.14), 0 48px 80px -40px rgba(18,18,18,.5); }
+/* the camera is the photo as a background of the glass itself: nothing larger than the glass is laid out (deco-over-text), and the zoom is redrawn from the file */
+.tour-cam { position: absolute; inset: 0; background: #fff url("../images/products/royal/1.webp") 50% 50% / 100% no-repeat; }
+.tour-dots { display: flex; justify-content: center; gap: 10px; margin: 40px 0 0; padding: 0; list-style: none; }
+.tour-dots li { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in srgb, var(--ink) 20%, transparent); transition: background-color .3s var(--ease), scale .3s var(--ease); }
+.tour-dots li.on { background: var(--accent); scale: 1.25; }
+
+/* ==========================================================================
+   DETAILS · C8: the story and what comes in the box, against the spec on an ivory card
+   ========================================================================== */
+.spec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(40px, 6vw, 112px); }
+.spec-txt h2 { margin-top: 16px; }
+.spec-txt > p { max-width: 44ch; margin-top: 24px; font-size: var(--fs-lead); line-height: 1.7; color: var(--muted-strong); }
+.spec-h { margin: 40px 0 16px; font-size: var(--fs-h3); }
+.inbox { display: grid; gap: 12px; }
+.inbox li { display: flex; align-items: center; gap: 12px; font-size: var(--fs-body); }
+.inbox .ic { width: 20px; height: 20px; color: var(--accent); }
+.acc { display: grid; gap: 8px; margin-top: 40px; }
+.acc details { border-radius: 12px; background: var(--ivory); }
+.acc summary { position: relative; display: flex; align-items: center; min-height: 56px; padding-block: 0; padding-inline: 20px 48px; font-weight: 500; cursor: pointer; list-style: none; border-radius: 12px; }
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary::after { /* qa-allow: physical (the same bordered chevron) */ content: ""; position: absolute; top: 50%; inset-inline-end: 22px; width: 8px; height: 8px; margin-top: -6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .24s var(--ease); }
+.acc details[open] summary::after { transform: rotate(225deg) translate(-2px, -2px); }
+.acc details p { max-width: 56ch; padding: 0 20px 20px; font-size: var(--fs-small); line-height: 1.7; color: var(--muted-strong); }
+.spec-card { padding: clamp(28px, 3vw, 56px); border-radius: var(--r-card); background: var(--ivory); }
+.spec-card .spec-h:first-child { margin-top: 0; }
+.spec-dl { display: grid; gap: 4px; margin: 0; }
+.spec-dl div { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 10px 0; }
+.spec-dl dt { font-size: var(--fs-small); color: var(--muted-strong); }
+.spec-dl dd { margin: 0; font-size: var(--fs-small); font-weight: 500; text-align: end; }
+
+/* ==========================================================================
+   REVIEWS · three still cards; CLOSE · the invitation, then the service band
+   ========================================================================== */
+.rw-still { align-items: stretch; }
+.rw-still .rv-card { align-content: start; }
+.close { padding-bottom: 0; text-align: center; }
+.close .head { margin-bottom: 32px; }
+.close-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.close-cta .ic { width: 20px; height: 20px; }
+
+/* ==========================================================================
+   THE BUY BAR · price and the button within reach once the box has scrolled away
+   ========================================================================== */
+.buybar { position: fixed; z-index: 45; bottom: 16px; left: 50%; /* qa-allow: physical (centred with translate) */ display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 16px; width: min(760px, calc(100% - 2 * var(--gutter))); padding: 10px; padding-inline-start: 10px; border-radius: var(--r-card); background: var(--surface); box-shadow: 0 24px 60px -20px rgba(18,18,18,.35), 0 2px 8px rgba(18,18,18,.06);
+  translate: -50% 140%; opacity: 0; transition: translate .45s var(--ease-io), opacity .3s var(--ease); }
+.buybar.is-on { translate: -50% 0; opacity: 1; }
+.buybar img { width: 56px; height: 56px; border-radius: 10px; background: var(--ivory); object-fit: contain; mix-blend-mode: multiply; }
+.buybar-txt { display: grid; min-width: 0; line-height: 1.35; }
+.buybar-txt b { font-size: 13px; letter-spacing: .12em; }
+.buybar-txt span { overflow: hidden; font-size: var(--fs-micro); color: var(--muted-strong); white-space: nowrap; text-overflow: ellipsis; }
+.buybar .btn { min-height: 48px; }
+
+/* ==========================================================================
+   RING SIZES · a side sheet from the start side
+   ========================================================================== */
+.sheet { position: fixed; inset-block: 0; inset-inline-start: 0; inset-inline-end: auto; width: min(92vw, 480px); max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; border: 0; background: var(--surface); color: var(--ink); box-shadow: 0 0 48px rgba(18,18,18,.16); }
+.sheet::backdrop { background: rgba(18,18,18,.45); }
+.sheet-in { display: grid; gap: 24px; padding: 20px 24px 32px; }
+.sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.sheet-top h2 { font-family: var(--f-text); font-size: var(--fs-h3l); font-weight: 500; letter-spacing: 0; line-height: 1.3; }
+.sheet-x { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--ivory); cursor: pointer; transition: background-color .18s var(--ease); }
+.sheet-x .ic { width: 20px; height: 20px; }
+.steps3 { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
+.steps3 li { position: relative; display: grid; gap: 2px; padding-inline-start: 40px; counter-increment: s; font-size: var(--fs-small); line-height: 1.6; color: var(--muted-strong); }
+.steps3 li::before { content: counter(s); position: absolute; top: 0; inset-inline-start: 0; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--tint-12); font-family: var(--f-latin); font-size: 13px; font-weight: 500; color: var(--accent-text); }
+.steps3 b { color: var(--ink); }
+.sizes { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+.sizes th { padding: 10px 12px; font-size: var(--fs-micro); font-weight: 500; color: var(--muted-strong); text-align: start; }
+.sizes td { padding: 8px 12px; font-family: var(--f-latin); font-variant-numeric: tabular-nums; }
+.sizes tbody tr:nth-child(odd) td { background: var(--ivory); }
+.sizes tbody tr td:first-child { border-start-start-radius: 8px; border-end-start-radius: 8px; font-weight: 500; }
+.sizes tbody tr td:last-child { border-start-end-radius: 8px; border-end-end-radius: 8px; }
+.sheet-note { font-size: var(--fs-micro); line-height: 1.6; color: var(--muted-strong); }
+
+/* ==========================================================================
+   HOVER (MV:lm7 families, as on the homepage)
+   ========================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  .crumbs a:hover { color: var(--accent-text); }
+  .buy-fav:hover, .sheet-x:hover { background: var(--sand); }
+  .gal-play:hover { background: #fff; }
+  .box-wa:hover { color: var(--accent-text); }
+  .sel select:hover { background: var(--sand); }
+  .acc summary:hover { background: var(--sand); }
+  .opt-row .tlink:hover { color: var(--ink); }
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .gal-item.has-loupe { cursor: none; } }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  /* the stage only where it pins (gsap/_gsap-core.md: pin CSS inside the pin's media) */
+  .js .tour.is-stage { min-height: 100svh; display: grid; align-content: center; padding-block: 56px; }
+  .js .tour.is-stage .head { margin-bottom: clamp(24px, 4vh, 48px); }
+  .js .tour.is-stage h2 { font-size: min(var(--fs-h2s), 7vh); }
+  .js .tour.is-stage .tour-in { display: grid; grid-template-columns: auto minmax(0, 520px); justify-content: center; align-items: center; gap: clamp(56px, 7vw, 160px); }
+  .js .tour.is-stage .tour-vis { display: block; }
+  .js .tour.is-stage .tour-steps { display: grid; grid-template-columns: 1fr; max-width: none; margin: 0; }
+  .js .tour.is-stage .tour-step { grid-area: 1 / 1; grid-template-columns: 1fr; }
+  .js .tour.is-stage .tour-crop { display: none; }
+  .js .tour.is-stage .tour-txt { gap: 16px; }
+  .js .tour.is-stage .tour-txt p { font-size: var(--fs-lead); }
+  .js .tour.is-stage .tour-more { margin-top: clamp(24px, 3vh, 40px); }
+}
+@media (max-width: 1180px) {
+  .buybar { bottom: 0; width: 100%; border-radius: var(--r-card) var(--r-card) 0 0; padding: 12px var(--gutter); }
+  html.has-buybar .fabs { bottom: 112px; }
+}
+@media (max-width: 1023px) {
+  .pdp { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 16px; }
+  /* the gallery becomes a row to swipe; the next photo peeks in, so the row reads as one */
+  .gal-track { display: flex; gap: 8px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .gal-track::-webkit-scrollbar { display: none; }
+  .gal-item, .gal-main { flex: 0 0 72%; aspect-ratio: 1; scroll-snap-align: start; }
+  .gal-count { display: block; margin-top: 12px; direction: ltr; font-family: var(--f-latin); font-size: 13px; text-align: center; color: var(--muted-strong); }
+  .box { position: static; }
+  .tour-steps { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
+  /* the body sits on one side here, so the head follows it (section axis) */
+  .tour .head.center { justify-items: start; text-align: start; }
+  .tour-more { text-align: start; }
+  .spec { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .crumbs { padding-top: 16px; }
+  .gal-item, .gal-main { flex-basis: 86%; }
+  .box { gap: 18px; }
+  .box-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tour-step { grid-template-columns: 112px 1fr; gap: 20px; }
+  .tour-crop { width: 112px; }
+  .tour-n { font-size: 28px; }
+  .tour-txt p { font-size: var(--fs-micro); line-height: 1.65; }
+  .spec-card { padding: 24px 20px; }
+  .rw-still { grid-template-columns: minmax(0, 1fr); }
+  .close-cta .btn { flex: 1 1 100%; }
+  .buybar { grid-template-columns: 1fr auto; gap: 12px; padding: 12px 16px; }
+  .buybar img, .buybar-txt { display: none; }
+  .ft-legal { padding-bottom: 112px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buybar { transition: none; }
+}
